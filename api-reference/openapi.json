@@ -4,6 +4,12 @@
         "title": "Plotweaver AI Voice API",
         "version": "0.1.0"
     },
+    "servers": [
+        {
+          "url": "https://voice.plotweaver.app",
+          "description": "Testing Server"
+        }
+    ],
     "paths": {
         "/v1/audio_books/": {
             "get": {
@@ -230,12 +236,18 @@
                     "file": {
                         "type": "string",
                         "title": "File",
-                        "description": "File to be Processed By AI"
+                        "description": "A Public accessible URI or path string pointing to the file.",
+                        "examples": [
+                            "s3://bucket/audio/lesson_1.mp3"
+                        ]
                     },
                     "name": {
                         "type": "string",
                         "title": "Name",
-                        "description": "Name of the Audio Book"
+                        "description": "The title of your audiobook",
+                        "examples": [
+                            "The Great Gatsby: Afro-Centric Edition"
+                        ]
                     },
                     "action_type": {
                         "type": "string",
@@ -245,11 +257,17 @@
                             "subtitle_only"
                         ],
                         "title": "Action Type",
-                        "description": "Type of action to be perform by the AI"
+                        "description": "Must be one of the three specific strings defined.",
+                        "examples": [
+                            "dubbing_and_subtitle"
+                        ]
                     },
                     "source_language": {
                         "$ref": "#/components/schemas/Language",
-                        "description": "Language of the source file"
+                        "description": "The starting language (case-sensitive to your Enum)",
+                        "examples": [
+                            "Yoruba"
+                        ]
                     },
                     "target_languages": {
                         "items": {
@@ -257,7 +275,14 @@
                         },
                         "type": "array",
                         "title": "Target Languages",
-                        "description": "Languages to produce output in"
+                        "description": "A JSON array of valid Language enum values",
+                        "examples": [
+                            [
+                                "Igbo",
+                                "English",
+                                "Swahili"
+                            ]
+                        ]
                     }
                 },
                 "type": "object",
@@ -275,12 +300,18 @@
                     "file": {
                         "type": "string",
                         "title": "File",
-                        "description": "File to be Processed By AI"
+                        "description": "A Public accessible URI or path string pointing to the file.",
+                        "examples": [
+                            "s3://bucket/audio/lesson_1.mp3"
+                        ]
                     },
                     "name": {
                         "type": "string",
                         "title": "Name",
-                        "description": "Name of the Audio Book"
+                        "description": "The title of your audiobook",
+                        "examples": [
+                            "The Great Gatsby: Afro-Centric Edition"
+                        ]
                     },
                     "action_type": {
                         "type": "string",
@@ -290,11 +321,17 @@
                             "subtitle_only"
                         ],
                         "title": "Action Type",
-                        "description": "Type of action to be perform by the AI"
+                        "description": "Must be one of the three specific strings defined.",
+                        "examples": [
+                            "dubbing_and_subtitle"
+                        ]
                     },
                     "source_language": {
                         "$ref": "#/components/schemas/Language",
-                        "description": "Language of the source file"
+                        "description": "The starting language (case-sensitive to your Enum)",
+                        "examples": [
+                            "Yoruba"
+                        ]
                     },
                     "target_languages": {
                         "items": {
@@ -302,7 +339,14 @@
                         },
                         "type": "array",
                         "title": "Target Languages",
-                        "description": "Languages to produce output in"
+                        "description": "A JSON array of valid Language enum values",
+                        "examples": [
+                            [
+                                "Igbo",
+                                "English",
+                                "Swahili"
+                            ]
+                        ]
                     }
                 },
                 "type": "object",
