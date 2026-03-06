@@ -11,6 +11,84 @@
         }
     ],
     "paths": {
+        "/v1/videos/subtitle": {
+            "post": {
+                "tags": [
+                    "Video"
+                ],
+                "summary": "Stream Audio File",
+                "operationId": "stream_audio_file_v1_videos_subtitle_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubtitleVideoModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/voices/stream": {
+            "post": {
+                "tags": [
+                    "Voice"
+                ],
+                "summary": "Stream Audio File",
+                "operationId": "stream_audio_file_v1_voices_stream_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StreamAudioModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/audio_books/": {
             "get": {
                 "tags": [
@@ -236,9 +314,9 @@
                     "file": {
                         "type": "string",
                         "title": "File",
-                        "description": "A Public accessible URI or path string pointing to the file.",
+                        "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "s3://bucket/audio/lesson_1.mp3"
+                            "s3://bucket/audio/lesson_1.txt"
                         ]
                     },
                     "name": {
@@ -269,6 +347,21 @@
                             "Yoruba"
                         ]
                     },
+                    "audio_book_cover": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Audio Book Cover",
+                        "description": "Public Accessible URI to an image to be used as the Audio Book Cover",
+                        "examples": [
+                            "https://example.com/covers/cover01.jpg"
+                        ]
+                    },
                     "target_languages": {
                         "items": {
                             "$ref": "#/components/schemas/Language"
@@ -291,6 +384,7 @@
                     "name",
                     "action_type",
                     "source_language",
+                    "audio_book_cover",
                     "target_languages"
                 ],
                 "title": "AudioBookModel"
@@ -300,9 +394,9 @@
                     "file": {
                         "type": "string",
                         "title": "File",
-                        "description": "A Public accessible URI or path string pointing to the file.",
+                        "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "s3://bucket/audio/lesson_1.mp3"
+                            "s3://bucket/audio/lesson_1.txt"
                         ]
                     },
                     "name": {
@@ -384,6 +478,88 @@
                     "Swahili"
                 ],
                 "title": "Language"
+            },
+            "StreamAudioModel": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "title": "File",
+                        "description": "A Public accessible URI or path string pointing to the audio file.",
+                        "examples": [
+                            "s3://bucket/audio/lesson_1.mp3"
+                        ]
+                    },
+                    "source_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "The starting language (case-sensitive to your Enum)",
+                        "examples": [
+                            "Yoruba"
+                        ]
+                    },
+                    "target_languages": {
+                        "items": {
+                            "$ref": "#/components/schemas/Language"
+                        },
+                        "type": "array",
+                        "title": "Target Languages",
+                        "description": "A JSON array of valid Language enum values",
+                        "examples": [
+                            [
+                                "Igbo",
+                                "English",
+                                "Swahili"
+                            ]
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file",
+                    "source_language",
+                    "target_languages"
+                ],
+                "title": "StreamAudioModel"
+            },
+            "SubtitleVideoModel": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "title": "File",
+                        "description": "A Public accessible URI or path string pointing to the video file.",
+                        "examples": [
+                            "s3://bucket/audio/lesson_1.mp4"
+                        ]
+                    },
+                    "source_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "The starting language (case-sensitive to your Enum)",
+                        "examples": [
+                            "Yoruba"
+                        ]
+                    },
+                    "target_languages": {
+                        "items": {
+                            "$ref": "#/components/schemas/Language"
+                        },
+                        "type": "array",
+                        "title": "Target Languages",
+                        "description": "A JSON array of valid Language enum values",
+                        "examples": [
+                            [
+                                "Igbo",
+                                "English",
+                                "Swahili"
+                            ]
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file",
+                    "source_language",
+                    "target_languages"
+                ],
+                "title": "SubtitleVideoModel"
             },
             "UpdateAudioBookModel": {
                 "properties": {
