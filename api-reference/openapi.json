@@ -7,7 +7,7 @@
     "servers": [
         {
           "url": "https://voice.plotweaver.app",
-          "description": "Testing Server"
+          "description": "Staging Server"
         }
     ],
     "paths": {
@@ -125,6 +125,7 @@
                     "Audio Book"
                 ],
                 "summary": "Create Audio Book",
+                "description": "This Create an Audio Book and immediately starts AI Processing on the Audio book input Text.\nThe Response of this endpoint includes a task_id which can be used to monitor the Processing Status for the Audio",
                 "operationId": "create_audio_book_v1_audio_books__post",
                 "requestBody": {
                     "content": {
@@ -378,6 +379,38 @@
                                 "Swahili"
                             ]
                         ]
+                    },
+                    "synthesis_result": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/SynthesisResponseModel"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "task_status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Task Status"
+                    },
+                    "task_progress": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Task Progress"
                     }
                 },
                 "type": "object",
@@ -387,7 +420,10 @@
                     "action_type",
                     "source_language",
                     "audio_book_cover",
-                    "target_languages"
+                    "target_languages",
+                    "synthesis_result",
+                    "task_status",
+                    "task_progress"
                 ],
                 "title": "AudioBookModel"
             },
@@ -562,6 +598,58 @@
                     "target_languages"
                 ],
                 "title": "SubtitleVideoModel"
+            },
+            "SynthesisResponseModel": {
+                "properties": {
+                    "original_text": {
+                        "type": "string",
+                        "title": "Original Text"
+                    },
+                    "translated_text": {
+                        "type": "string",
+                        "title": "Translated Text"
+                    },
+                    "duration": {
+                        "type": "string",
+                        "title": "Duration"
+                    },
+                    "duration_seconds": {
+                        "type": "number",
+                        "title": "Duration Seconds"
+                    },
+                    "timestamps": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Timestamps"
+                    },
+                    "emotions": {
+                        "additionalProperties": {
+                            "type": "integer"
+                        },
+                        "type": "object",
+                        "title": "Emotions"
+                    },
+                    "sample_rate": {
+                        "type": "integer",
+                        "title": "Sample Rate"
+                    },
+                    "audio_base64": {
+                        "type": "string",
+                        "title": "Audio Base64"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "original_text",
+                    "translated_text",
+                    "duration",
+                    "duration_seconds",
+                    "timestamps",
+                    "emotions",
+                    "sample_rate",
+                    "audio_base64"
+                ],
+                "title": "SynthesisResponseModel"
             },
             "UpdateAudioBookModel": {
                 "properties": {
