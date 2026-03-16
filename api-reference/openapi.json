@@ -11,6 +11,45 @@
         }
     ],
     "paths": {
+        "/v1/misc/upload": {
+            "post": {
+                "tags": [
+                    "Misc"
+                ],
+                "summary": "Upload File",
+                "operationId": "upload_file_v1_misc_upload_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_upload_file_v1_misc_upload_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/videos/subtitle": {
             "post": {
                 "tags": [
@@ -125,7 +164,7 @@
                     "Audio Book"
                 ],
                 "summary": "Create Audio Book",
-                "description": "This Create an Audio Book and immediately starts AI Processing on the Audio book input Text.\nThe Response of this endpoint includes a task_id which can be used to monitor the Processing Status for the Audio",
+                "description": "This Creates an Audio Book and immediately starts AI Processing on the Audio book input Text.",
                 "operationId": "create_audio_book_v1_audio_books__post",
                 "requestBody": {
                     "content": {
@@ -314,6 +353,11 @@
         "schemas": {
             "AudioBookModel": {
                 "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
                     "file": {
                         "type": "string",
                         "title": "File",
@@ -380,15 +424,19 @@
                             ]
                         ]
                     },
-                    "synthesis_result": {
+                    "localized_files": {
                         "anyOf": [
                             {
-                                "$ref": "#/components/schemas/SynthesisResponseModel"
+                                "additionalProperties": {
+                                    "type": "string"
+                                },
+                                "type": "object"
                             },
                             {
                                 "type": "null"
                             }
-                        ]
+                        ],
+                        "title": "Localized Files"
                     },
                     "task_status": {
                         "anyOf": [
@@ -411,21 +459,52 @@
                             }
                         ],
                         "title": "Task Progress"
+                    },
+                    "date_created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Date Created"
+                    },
+                    "date_updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Date Updated"
                     }
                 },
                 "type": "object",
                 "required": [
+                    "id",
                     "file",
                     "name",
                     "action_type",
                     "source_language",
                     "audio_book_cover",
                     "target_languages",
-                    "synthesis_result",
+                    "localized_files",
                     "task_status",
-                    "task_progress"
+                    "task_progress",
+                    "date_created",
+                    "date_updated"
                 ],
                 "title": "AudioBookModel"
+            },
+            "Body_upload_file_v1_misc_upload_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File"
+                    },
+                    "upload_target": {
+                        "$ref": "#/components/schemas/UploadTarget"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file",
+                    "upload_target"
+                ],
+                "title": "Body_upload_file_v1_misc_upload_post"
             },
             "CreateAudioBookModel": {
                 "properties": {
@@ -599,58 +678,6 @@
                 ],
                 "title": "SubtitleVideoModel"
             },
-            "SynthesisResponseModel": {
-                "properties": {
-                    "original_text": {
-                        "type": "string",
-                        "title": "Original Text"
-                    },
-                    "translated_text": {
-                        "type": "string",
-                        "title": "Translated Text"
-                    },
-                    "duration": {
-                        "type": "string",
-                        "title": "Duration"
-                    },
-                    "duration_seconds": {
-                        "type": "number",
-                        "title": "Duration Seconds"
-                    },
-                    "timestamps": {
-                        "items": {},
-                        "type": "array",
-                        "title": "Timestamps"
-                    },
-                    "emotions": {
-                        "additionalProperties": {
-                            "type": "integer"
-                        },
-                        "type": "object",
-                        "title": "Emotions"
-                    },
-                    "sample_rate": {
-                        "type": "integer",
-                        "title": "Sample Rate"
-                    },
-                    "audio_base64": {
-                        "type": "string",
-                        "title": "Audio Base64"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "original_text",
-                    "translated_text",
-                    "duration",
-                    "duration_seconds",
-                    "timestamps",
-                    "emotions",
-                    "sample_rate",
-                    "audio_base64"
-                ],
-                "title": "SynthesisResponseModel"
-            },
             "UpdateAudioBookModel": {
                 "properties": {
                     "name": {
@@ -714,6 +741,14 @@
                 },
                 "type": "object",
                 "title": "UpdateAudioBookModel"
+            },
+            "UploadTarget": {
+                "type": "string",
+                "enum": [
+                    "TESTS",
+                    "IDENTIFICATION_CARD"
+                ],
+                "title": "UploadTarget"
             },
             "ValidationError": {
                 "properties": {
