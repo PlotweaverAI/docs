@@ -635,28 +635,6 @@
                         ],
                         "title": "Name"
                     },
-                    "action_type": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Action Type"
-                    },
-                    "source_language": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Source Language"
-                    },
                     "audio_book_cover": {
                         "anyOf": [
                             {
@@ -667,20 +645,6 @@
                             }
                         ],
                         "title": "Audio Book Cover"
-                    },
-                    "target_languages": {
-                        "anyOf": [
-                            {
-                                "items": {
-                                    "type": "string"
-                                },
-                                "type": "array"
-                            },
-                            {
-                                "type": "null"
-                            }
-                        ],
-                        "title": "Target Languages"
                     }
                 },
                 "type": "object",
