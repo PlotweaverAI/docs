@@ -11,45 +11,6 @@
         }
     ],
     "paths": {
-        "/v1/misc/upload": {
-            "post": {
-                "tags": [
-                    "Misc"
-                ],
-                "summary": "Upload File",
-                "operationId": "upload_file_v1_misc_upload_post",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Body_upload_file_v1_misc_upload_post"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/v1/videos/subtitle": {
             "post": {
                 "tags": [
@@ -488,24 +449,6 @@
                 ],
                 "title": "AudioBookModel"
             },
-            "Body_upload_file_v1_misc_upload_post": {
-                "properties": {
-                    "file": {
-                        "type": "string",
-                        "contentMediaType": "application/octet-stream",
-                        "title": "File"
-                    },
-                    "upload_target": {
-                        "$ref": "#/components/schemas/UploadTarget"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "file",
-                    "upload_target"
-                ],
-                "title": "Body_upload_file_v1_misc_upload_post"
-            },
             "CreateAudioBookModel": {
                 "properties": {
                     "file": {
@@ -742,14 +685,6 @@
                 },
                 "type": "object",
                 "title": "UpdateAudioBookModel"
-            },
-            "UploadTarget": {
-                "type": "string",
-                "enum": [
-                    "TESTS",
-                    "IDENTIFICATION_CARD"
-                ],
-                "title": "UploadTarget"
             },
             "ValidationError": {
                 "properties": {
