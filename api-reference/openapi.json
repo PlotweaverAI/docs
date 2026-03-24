@@ -11,6 +11,45 @@
         }
     ],
     "paths": {
+        "/v1/misc/upload": {
+            "post": {
+                "tags": [
+                    "Misc"
+                ],
+                "summary": "Upload File",
+                "operationId": "upload_file_v1_misc_upload_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_upload_file_v1_misc_upload_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/v1/videos/subtitle": {
             "post": {
                 "tags": [
@@ -116,7 +155,7 @@
                 },
                 "security": [
                     {
-                        "HTTPBearer": []
+                        "APIKeyHeader": []
                     }
                 ]
             },
@@ -161,7 +200,7 @@
                 },
                 "security": [
                     {
-                        "HTTPBearer": []
+                        "APIKeyHeader": []
                     }
                 ]
             }
@@ -175,7 +214,7 @@
                 "operationId": "get_audio_book_v1_audio_books__audio_book_id__get",
                 "security": [
                     {
-                        "HTTPBearer": []
+                        "APIKeyHeader": []
                     }
                 ],
                 "parameters": [
@@ -221,7 +260,7 @@
                 "operationId": "update_audio_book_v1_audio_books__audio_book_id__patch",
                 "security": [
                     {
-                        "HTTPBearer": []
+                        "APIKeyHeader": []
                     }
                 ],
                 "parameters": [
@@ -277,7 +316,7 @@
                 "operationId": "delete_audio_book_v1_audio_books__audio_book_id__delete",
                 "security": [
                     {
-                        "HTTPBearer": []
+                        "APIKeyHeader": []
                     }
                 ],
                 "parameters": [
@@ -324,7 +363,7 @@
                         "title": "File",
                         "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "s3://bucket/audio/lesson_1.txt"
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/892a794d-c31d-4b15-9275-9d023178bf57_AudioBook.txt"
                         ]
                     },
                     "name": {
@@ -372,7 +411,13 @@
                     },
                     "target_languages": {
                         "items": {
-                            "$ref": "#/components/schemas/Language"
+                            "$ref": "#/components/schemas/Language",
+                            "description": "A String of valid Language enum values",
+                            "examples": [
+                                "Igbo",
+                                "Yoruba",
+                                "Chinese"
+                            ]
                         },
                         "type": "array",
                         "title": "Target Languages",
@@ -449,6 +494,24 @@
                 ],
                 "title": "AudioBookModel"
             },
+            "Body_upload_file_v1_misc_upload_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "contentMediaType": "application/octet-stream",
+                        "title": "File"
+                    },
+                    "upload_target": {
+                        "$ref": "#/components/schemas/UploadTarget"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file",
+                    "upload_target"
+                ],
+                "title": "Body_upload_file_v1_misc_upload_post"
+            },
             "CreateAudioBookModel": {
                 "properties": {
                     "file": {
@@ -456,7 +519,7 @@
                         "title": "File",
                         "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "s3://bucket/audio/lesson_1.txt"
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/892a794d-c31d-4b15-9275-9d023178bf57_AudioBook.txt"
                         ]
                     },
                     "name": {
@@ -489,7 +552,13 @@
                     },
                     "target_languages": {
                         "items": {
-                            "$ref": "#/components/schemas/Language"
+                            "$ref": "#/components/schemas/Language",
+                            "description": "A String of valid Language enum values",
+                            "examples": [
+                                "Igbo",
+                                "Yoruba",
+                                "Chinese"
+                            ]
                         },
                         "type": "array",
                         "title": "Target Languages",
@@ -559,7 +628,13 @@
                     },
                     "target_languages": {
                         "items": {
-                            "$ref": "#/components/schemas/Language"
+                            "$ref": "#/components/schemas/Language",
+                            "description": "A String of valid Language enum values",
+                            "examples": [
+                                "Igbo",
+                                "Yoruba",
+                                "Chinese"
+                            ]
                         },
                         "type": "array",
                         "title": "Target Languages",
@@ -598,19 +673,13 @@
                             "Yoruba"
                         ]
                     },
-                    "target_languages": {
-                        "items": {
-                            "$ref": "#/components/schemas/Language"
-                        },
-                        "type": "array",
-                        "title": "Target Languages",
-                        "description": "A JSON array of valid Language enum values",
+                    "target_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "A String of valid Language enum values",
                         "examples": [
-                            [
-                                "Igbo",
-                                "English",
-                                "Swahili"
-                            ]
+                            "Igbo",
+                            "Yoruba",
+                            "Chinese"
                         ]
                     }
                 },
@@ -618,7 +687,7 @@
                 "required": [
                     "file",
                     "source_language",
-                    "target_languages"
+                    "target_language"
                 ],
                 "title": "SubtitleVideoModel"
             },
@@ -649,6 +718,14 @@
                 },
                 "type": "object",
                 "title": "UpdateAudioBookModel"
+            },
+            "UploadTarget": {
+                "type": "string",
+                "enum": [
+                    "TESTS",
+                    "IDENTIFICATION_CARD"
+                ],
+                "title": "UploadTarget"
             },
             "ValidationError": {
                 "properties": {
@@ -692,9 +769,10 @@
             }
         },
         "securitySchemes": {
-            "HTTPBearer": {
-                "type": "http",
-                "scheme": "bearer"
+            "APIKeyHeader": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "API-KEY"
             }
         }
     }
