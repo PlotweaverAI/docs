@@ -57,6 +57,7 @@
                     "Voice"
                 ],
                 "summary": "List Audio Streams",
+                "description": "**List Voice Streams Performed by the User**",
                 "operationId": "list_audio_streams_v1_voices_streams_get",
                 "responses": {
                     "200": {
@@ -130,6 +131,106 @@
                         "HTTPBearer": []
                     }
                 ]
+            }
+        },
+        "/v1/voices/streams/{voice_id}": {
+            "get": {
+                "tags": [
+                    "Voice"
+                ],
+                "summary": "Get Audio Stream",
+                "description": "**Get Voice Stream by the Id**",
+                "operationId": "get_audio_stream_v1_voices_streams__voice_id__get",
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "voice_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "title": "Voice Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VoiceModel"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Voice"
+                ],
+                "summary": "Delete Audio Stream",
+                "description": "**Delete Voice Stream by the Id**",
+                "operationId": "delete_audio_stream_v1_voices_streams__voice_id__delete",
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "voice_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "title": "Voice Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/v1/audio_books/": {
