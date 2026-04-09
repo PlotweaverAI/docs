@@ -11,45 +11,6 @@
         }
     ],
     "paths": {
-        "/v1/misc/upload": {
-            "post": {
-                "tags": [
-                    "Misc"
-                ],
-                "summary": "Upload File",
-                "operationId": "upload_file_v1_misc_upload_post",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Body_upload_file_v1_misc_upload_post"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/v1/videos/subtitle": {
             "post": {
                 "tags": [
@@ -90,14 +51,45 @@
                 }
             }
         },
-        "/v1/voices/stream": {
+        "/v1/voices/streams": {
+            "get": {
+                "tags": [
+                    "Voice"
+                ],
+                "summary": "List Audio Streams",
+                "operationId": "list_audio_streams_v1_voices_streams_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/VoiceModel"
+                                    },
+                                    "type": "array",
+                                    "title": "Response List Audio Streams V1 Voices Streams Get"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Voice"
                 ],
                 "summary": "Stream Audio File",
-                "description": "**Stream Real-Time AI Audio Synthesis**\n\nConverts text to speech and streams the resulting audio data back to the client\nin real-time. This endpoint is designed for low-latency applications where\nplayback should begin before the entire file is generated.",
-                "operationId": "stream_audio_file_v1_voices_stream_post",
+                "description": "**Stream Real-Time AI Audio Synthesis**\n\nConverts Speech from one source Language to a Target Language while maintaining a very low latency",
+                "operationId": "stream_audio_file_v1_voices_streams_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -113,7 +105,9 @@
                         "description": "Successful Response",
                         "content": {
                             "application/json": {
-                                "schema": {}
+                                "schema": {
+                                    "$ref": "#/components/schemas/VoiceModel"
+                                }
                             }
                         }
                     },
@@ -127,7 +121,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
             }
         },
         "/v1/audio_books/": {
@@ -156,6 +158,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
                     }
                 ]
             },
@@ -201,6 +206,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
                     }
                 ]
             }
@@ -215,6 +223,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
                     }
                 ],
                 "parameters": [
@@ -261,6 +272,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
                     }
                 ],
                 "parameters": [
@@ -317,6 +331,9 @@
                 "security": [
                     {
                         "APIKeyHeader": []
+                    },
+                    {
+                        "HTTPBearer": []
                     }
                 ],
                 "parameters": [
@@ -342,6 +359,22 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/HTTPValidationError"
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/health": {
+            "get": {
+                "summary": "Get Health Status",
+                "operationId": "get_health_status_health_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
                             }
                         }
                     }
@@ -494,24 +527,6 @@
                 ],
                 "title": "AudioBookModel"
             },
-            "Body_upload_file_v1_misc_upload_post": {
-                "properties": {
-                    "file": {
-                        "type": "string",
-                        "contentMediaType": "application/octet-stream",
-                        "title": "File"
-                    },
-                    "upload_target": {
-                        "$ref": "#/components/schemas/UploadTarget"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "file",
-                    "upload_target"
-                ],
-                "title": "Body_upload_file_v1_misc_upload_post"
-            },
             "CreateAudioBookModel": {
                 "properties": {
                     "file": {
@@ -616,7 +631,7 @@
                         "title": "File",
                         "description": "A Public accessible URI or path string pointing to the audio file.",
                         "examples": [
-                            "s3://bucket/audio/lesson_1.mp3"
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/396a2b55-0fa6-4fed-a5fd-25381219c4ec_harvard.wav"
                         ]
                     },
                     "source_language": {
@@ -626,25 +641,13 @@
                             "Yoruba"
                         ]
                     },
-                    "target_languages": {
-                        "items": {
-                            "$ref": "#/components/schemas/Language",
-                            "description": "A String of valid Language enum values",
-                            "examples": [
-                                "Igbo",
-                                "Yoruba",
-                                "Chinese"
-                            ]
-                        },
-                        "type": "array",
-                        "title": "Target Languages",
-                        "description": "A JSON array of valid Language enum values",
+                    "target_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "A String of valid Language enum values",
                         "examples": [
-                            [
-                                "Igbo",
-                                "English",
-                                "Swahili"
-                            ]
+                            "Igbo",
+                            "Yoruba",
+                            "Chinese"
                         ]
                     }
                 },
@@ -652,7 +655,7 @@
                 "required": [
                     "file",
                     "source_language",
-                    "target_languages"
+                    "target_language"
                 ],
                 "title": "StreamAudioModel"
             },
@@ -719,14 +722,6 @@
                 "type": "object",
                 "title": "UpdateAudioBookModel"
             },
-            "UploadTarget": {
-                "type": "string",
-                "enum": [
-                    "TESTS",
-                    "IDENTIFICATION_CARD"
-                ],
-                "title": "UploadTarget"
-            },
             "ValidationError": {
                 "properties": {
                     "loc": {
@@ -766,6 +761,95 @@
                     "type"
                 ],
                 "title": "ValidationError"
+            },
+            "VoiceModel": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "title": "File",
+                        "description": "A Public accessible URI or path string pointing to the audio file.",
+                        "examples": [
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/396a2b55-0fa6-4fed-a5fd-25381219c4ec_harvard.wav"
+                        ]
+                    },
+                    "source_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "The starting language (case-sensitive to your Enum)",
+                        "examples": [
+                            "Yoruba"
+                        ]
+                    },
+                    "target_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "A String of valid Language enum values",
+                        "examples": [
+                            "Igbo",
+                            "Yoruba",
+                            "Chinese"
+                        ]
+                    },
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
+                    "localized_file": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Localized File"
+                    },
+                    "task_status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Task Status"
+                    },
+                    "task_progress": {
+                        "anyOf": [
+                            {
+                                "type": "number"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Task Progress"
+                    },
+                    "date_created": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Date Created"
+                    },
+                    "date_updated": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Date Updated"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file",
+                    "source_language",
+                    "target_language",
+                    "id",
+                    "localized_file",
+                    "task_status",
+                    "task_progress",
+                    "date_created",
+                    "date_updated"
+                ],
+                "title": "VoiceModel"
             }
         },
         "securitySchemes": {
@@ -773,6 +857,10 @@
                 "type": "apiKey",
                 "in": "header",
                 "name": "API-KEY"
+            },
+            "HTTPBearer": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
