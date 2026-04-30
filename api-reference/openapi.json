@@ -497,7 +497,7 @@
                         "title": "File",
                         "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "https://dpodkdhb03iee.cloudfront.net/TESTS/892a794d-c31d-4b15-9275-9d023178bf57_AudioBook.txt"
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/a553898a-e693-4c15-b3e6-32db42cf9482_AudioBook.txt"
                         ]
                     },
                     "name": {
@@ -508,24 +508,20 @@
                             "The Great Gatsby: Afro-Centric Edition"
                         ]
                     },
-                    "action_type": {
-                        "type": "string",
-                        "enum": [
-                            "dubbing_and_subtitle",
-                            "dubbing_only",
-                            "subtitle_only"
-                        ],
-                        "title": "Action Type",
-                        "description": "Must be one of the three specific strings defined.",
-                        "examples": [
-                            "dubbing_and_subtitle"
-                        ]
-                    },
                     "source_language": {
                         "$ref": "#/components/schemas/Language",
                         "description": "The starting language (case-sensitive to your Enum)",
                         "examples": [
-                            "Yoruba"
+                            "English"
+                        ]
+                    },
+                    "target_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "A String of valid Language enum values",
+                        "examples": [
+                            "English",
+                            "Hindu",
+                            "Chinese"
                         ]
                     },
                     "audio_book_cover": {
@@ -543,40 +539,16 @@
                             "https://example.com/covers/cover01.jpg"
                         ]
                     },
-                    "target_languages": {
-                        "items": {
-                            "$ref": "#/components/schemas/Language",
-                            "description": "A String of valid Language enum values",
-                            "examples": [
-                                "Igbo",
-                                "Yoruba",
-                                "Chinese"
-                            ]
-                        },
-                        "type": "array",
-                        "title": "Target Languages",
-                        "description": "A JSON array of valid Language enum values",
-                        "examples": [
-                            [
-                                "Igbo",
-                                "English",
-                                "Swahili"
-                            ]
-                        ]
-                    },
-                    "localized_files": {
+                    "localized_file": {
                         "anyOf": [
                             {
-                                "additionalProperties": {
-                                    "type": "string"
-                                },
-                                "type": "object"
+                                "type": "string"
                             },
                             {
                                 "type": "null"
                             }
                         ],
-                        "title": "Localized Files"
+                        "title": "Localized File"
                     },
                     "task_status": {
                         "anyOf": [
@@ -616,13 +588,9 @@
                     "id",
                     "file",
                     "name",
-                    "action_type",
                     "source_language",
+                    "target_language",
                     "audio_book_cover",
-                    "target_languages",
-                    "localized_files",
-                    "task_status",
-                    "task_progress",
                     "date_created",
                     "date_updated"
                 ],
@@ -635,7 +603,7 @@
                         "title": "File",
                         "description": "A Public accessible URI or path string pointing to the text file.",
                         "examples": [
-                            "https://dpodkdhb03iee.cloudfront.net/TESTS/892a794d-c31d-4b15-9275-9d023178bf57_AudioBook.txt"
+                            "https://dpodkdhb03iee.cloudfront.net/TESTS/a553898a-e693-4c15-b3e6-32db42cf9482_AudioBook.txt"
                         ]
                     },
                     "name": {
@@ -646,55 +614,56 @@
                             "The Great Gatsby: Afro-Centric Edition"
                         ]
                     },
-                    "action_type": {
-                        "type": "string",
-                        "enum": [
-                            "dubbing_and_subtitle",
-                            "dubbing_only",
-                            "subtitle_only"
-                        ],
-                        "title": "Action Type",
-                        "description": "Must be one of the three specific strings defined.",
-                        "examples": [
-                            "dubbing_and_subtitle"
-                        ]
-                    },
                     "source_language": {
                         "$ref": "#/components/schemas/Language",
                         "description": "The starting language (case-sensitive to your Enum)",
                         "examples": [
-                            "Yoruba"
+                            "English"
                         ]
                     },
-                    "target_languages": {
-                        "items": {
-                            "$ref": "#/components/schemas/Language",
-                            "description": "A String of valid Language enum values",
-                            "examples": [
-                                "Igbo",
-                                "Yoruba",
-                                "Chinese"
-                            ]
-                        },
-                        "type": "array",
-                        "title": "Target Languages",
-                        "description": "A JSON array of valid Language enum values",
+                    "target_language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "A String of valid Language enum values",
                         "examples": [
-                            [
-                                "Igbo",
-                                "English",
-                                "Swahili"
-                            ]
+                            "English",
+                            "Hindu",
+                            "Chinese"
                         ]
+                    },
+                    "use_voice_clone": {
+                        "type": "boolean",
+                        "title": "Use Voice Clone",
+                        "default": false
+                    },
+                    "preset_voice_name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Preset Voice Name"
+                    },
+                    "voice_clone_sample": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Voice Clone Sample"
                     }
                 },
                 "type": "object",
                 "required": [
                     "file",
                     "name",
-                    "action_type",
                     "source_language",
-                    "target_languages"
+                    "target_language"
                 ],
                 "title": "CreateAudioBookModel"
             },
@@ -714,14 +683,22 @@
             "Language": {
                 "type": "string",
                 "enum": [
-                    "Igbo",
-                    "Zulu",
-                    "Hausa",
-                    "Yoruba",
                     "French",
                     "English",
                     "Amharic",
-                    "Swahili"
+                    "Swahili",
+                    "Chinese",
+                    "Japanese",
+                    "Korean",
+                    "German",
+                    "Russian",
+                    "Portuguese",
+                    "Spanish",
+                    "Italian",
+                    "Arabic",
+                    "Dutch",
+                    "Hindi",
+                    "Urdu"
                 ],
                 "title": "Language"
             },
@@ -739,15 +716,15 @@
                         "$ref": "#/components/schemas/Language",
                         "description": "The starting language (case-sensitive to your Enum)",
                         "examples": [
-                            "Yoruba"
+                            "English"
                         ]
                     },
                     "target_language": {
                         "$ref": "#/components/schemas/Language",
                         "description": "A String of valid Language enum values",
                         "examples": [
-                            "Igbo",
-                            "Yoruba",
+                            "English",
+                            "Hindu",
                             "Chinese"
                         ]
                     }
@@ -774,15 +751,15 @@
                         "$ref": "#/components/schemas/Language",
                         "description": "The starting language (case-sensitive to your Enum)",
                         "examples": [
-                            "Yoruba"
+                            "English"
                         ]
                     },
                     "target_language": {
                         "$ref": "#/components/schemas/Language",
                         "description": "A String of valid Language enum values",
                         "examples": [
-                            "Igbo",
-                            "Yoruba",
+                            "English",
+                            "Hindu",
                             "Chinese"
                         ]
                     }
@@ -877,15 +854,15 @@
                         "$ref": "#/components/schemas/Language",
                         "description": "The starting language (case-sensitive to your Enum)",
                         "examples": [
-                            "Yoruba"
+                            "English"
                         ]
                     },
                     "target_language": {
                         "$ref": "#/components/schemas/Language",
                         "description": "A String of valid Language enum values",
                         "examples": [
-                            "Igbo",
-                            "Yoruba",
+                            "English",
+                            "Hindu",
                             "Chinese"
                         ]
                     },
