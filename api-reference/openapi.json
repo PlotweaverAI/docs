@@ -633,6 +633,7 @@
                     "use_voice_clone": {
                         "type": "boolean",
                         "title": "Use Voice Clone",
+                        "description": "Flag indicating whether a voice clone should be used or not",
                         "default": false
                     },
                     "preset_voice_name": {
@@ -644,7 +645,8 @@
                                 "type": "null"
                             }
                         ],
-                        "title": "Preset Voice Name"
+                        "title": "Preset Voice Name",
+                        "description": "Preset Voice to be used for the Audio Book Audio"
                     },
                     "voice_clone_sample": {
                         "anyOf": [
@@ -655,7 +657,8 @@
                                 "type": "null"
                             }
                         ],
-                        "title": "Voice Clone Sample"
+                        "title": "Voice Clone Sample",
+                        "description": "Public URL to a sample voice audio, only used when use_voice_clone is True"
                     }
                 },
                 "type": "object",
